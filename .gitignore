@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.pyc
+
+# Virtual Env
+venv/
+.env
+
+# Logs
+logs/
+*.log
+
+# IDE
+.vscode/
+.idea/
+
+# Database
+*.db
+
+# Build
+dist/
+build/
+
+# Testing
+.pytest_cache/
+
+# OS
+.DS_Store
