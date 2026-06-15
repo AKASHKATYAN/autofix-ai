@@ -4,7 +4,7 @@ from sqlalchemy import DateTime
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
 
-from datetime import datetime
+from datetime import datetime,timezone
 
 from app.database import Base
 
@@ -37,5 +37,11 @@ class Repository(Base):
 
     created_at: Mapped[datetime] = mapped_column(
         DateTime,
-        default=datetime.utcnow
+        default=datetime.now(timezone.utc)
+    )
+    
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime,
+        default=datetime.now(timezone.utc),
+        onupdate=datetime.now(timezone.utc)
     )
