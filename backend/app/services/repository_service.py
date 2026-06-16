@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 from app.database.models import Repository
 
 from app.schemas import RepositoryCreate
+from app.services.github_service import GitHubService
 
 
 class RepositoryService:
@@ -23,10 +24,57 @@ class RepositoryService:
         if existing_repo:
             return existing_repo
 
+        # Extract owner and repo name
+        owner_repo = GitHubService.extract_owner_repo(
+            repository_data.github_url
+        )
+
+        owner = None
+        language = None
+        stars = None
+        forks = None
+        readme_content = None
+
+        if owner_repo:
+
+            owner_name, repo_name = owner_repo
+
+            metadata = GitHubService.get_repository_metadata(
+                owner_name,
+                repo_name
+            )
+
+            if metadata:
+
+                owner = metadata["owner"]["login"]
+
+                language = metadata.get(
+                    "language"
+                )
+
+                stars = metadata.get(
+                    "stargazers_count"
+                )
+
+                forks = metadata.get(
+                    "forks_count"
+                )
+
+            readme_content = GitHubService.get_readme(
+                owner_name,
+                repo_name
+            )
+
         repository = Repository(
             name=repository_data.name,
             github_url=repository_data.github_url,
-            description=repository_data.description
+            description=repository_data.description,
+
+            owner=owner,
+            language=language,
+            stars=stars,
+            forks=forks,
+            readme_content=readme_content
         )
 
         db.add(repository)

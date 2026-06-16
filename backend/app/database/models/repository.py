@@ -45,3 +45,27 @@ class Repository(Base):
         default=datetime.now(timezone.utc),
         onupdate=datetime.now(timezone.utc)
     )
+    stars: Mapped[int | None] = mapped_column(
+    Integer,
+    nullable=True
+)
+
+    forks: Mapped[int | None] = mapped_column(
+        Integer,
+        nullable=True
+    )
+
+    language: Mapped[str | None] = mapped_column(
+        String(100),
+        nullable=True
+    )
+
+    owner: Mapped[str | None] = mapped_column(
+        String(255),
+        nullable=True
+    )
+
+    readme_content: Mapped[str | None] = mapped_column(
+        String,
+        nullable=True
+    )

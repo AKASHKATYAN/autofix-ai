@@ -30,3 +30,14 @@ class RepositoryResponse(BaseModel):
     model_config = ConfigDict(
         from_attributes=True
     )
+    stars: int | None
+
+    forks: int | None
+
+    language: str | None
+
+    owner: str | None
+
+    readme_content: str | None
+
+   
