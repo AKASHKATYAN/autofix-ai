@@ -27,3 +27,5 @@ build/
 # OS
 .DS_Store
 
+# Cloned repositories
+backend/repositories/
