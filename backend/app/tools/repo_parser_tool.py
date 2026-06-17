@@ -64,13 +64,17 @@ class RepoParserTool:
 
         ignore_dirs = {
             ".git",
+            ".github",
             ".venv",
             "venv",
             "__pycache__",
             "node_modules",
             ".next",
             "dist",
-            "build"
+            "build",
+            "tests",
+            "docs",
+            "examples"
         }
         logger.info(
          f"Scanning repository: {repo_path}")

@@ -68,3 +68,4 @@ tqdm
 
 requests
 gitpython 
+chromadb
