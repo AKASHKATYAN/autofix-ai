@@ -29,3 +29,5 @@ build/
 
 # Cloned repositories
 backend/repositories/
+chroma_db/
+logs/
