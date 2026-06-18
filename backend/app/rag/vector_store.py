@@ -25,16 +25,15 @@ class VectorStore:
         )
         
     def add_documents(
-        self,
-        documents: list
-    ):
+    self,
+    documents: list
+):
 
         ids = []
         texts = []
+        metadatas = []
 
-        for index, document in enumerate(
-            documents
-        ):
+        for document in documents:
 
             ids.append(
                 str(uuid.uuid4())
@@ -44,20 +43,26 @@ class VectorStore:
                 document.content
             )
 
+            metadatas.append(
+                {
+                    "source": document.source
+                }
+            )
+
         self.collection.add(
             ids=ids,
-            documents=texts
+            documents=texts,
+            metadatas=metadatas
         )
 
         logger.info(
             f"Stored {len(documents)} documents"
-        ) 
-        
+        )
     def search(
     self,
     query: str,
     n_results: int = 5
-    ):
+):
 
         results = self.collection.query(
             query_texts=[query],
@@ -68,4 +73,7 @@ class VectorStore:
             f"Retrieved {n_results} results"
         )
 
-        return results       
+        return {
+            "documents": results["documents"][0],
+            "sources": results["metadatas"][0]
+        }    
