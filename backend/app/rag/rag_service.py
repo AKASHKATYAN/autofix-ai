@@ -16,44 +16,58 @@ class RAGService:
     self,
     collection_name: str = "autofix",
     repo_path: str | None = None
-):
+    ):
+
         self.retriever = Retriever(
             collection_name=collection_name
         )
+
         self.llm = LLMService()
+
         self.repo_path = repo_path
+
+        self.summary = None
+
+        if repo_path:
+
+            self.summary = (
+                RepositorySummaryService.generate_summary(
+                    repo_path
+                )
+            )
         
     def ask(
-        self,
-        question: str
+    self,
+    question: str
     ):
 
         results = self.retriever.retrieve(
             question
         )
+
         summary_text = ""
 
-        if self.repo_path:
-
-            summary = (
-                RepositorySummaryService.generate_summary(
-                    self.repo_path
-                )
-            )
+        if self.summary:
 
             summary_text = f"""
-        Repository Name:
-        {summary.repository_name}
+    Repository Name:
+    {self.summary.repository_name}
 
-        Total Files:
-        {summary.total_files}
+    Purpose:
+    {self.summary.purpose}
 
-        Languages:
-        {summary.languages}
+    Frameworks:
+    {", ".join(self.summary.frameworks or [])}
 
-        Directories:
-        {", ".join(summary.important_directories)}
-        """
+    Total Files:
+    {self.summary.total_files}
+
+    Languages:
+    {self.summary.languages}
+
+    Directories:
+    {", ".join(self.summary.important_directories)}
+    """
 
         chunks = results["documents"]
 

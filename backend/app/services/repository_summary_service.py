@@ -5,7 +5,9 @@ from app.logging import logger
 from app.rag.repository_summary import (
     RepositorySummary
 )
-
+from app.services.repository_intelligence_service import (
+    RepositoryIntelligenceService
+)
 
 class RepositorySummaryService:
 
@@ -84,20 +86,33 @@ class RepositorySummaryService:
                 important_directories.append(
                     item.name
                 )
+        frameworks = (
+        RepositoryIntelligenceService.detect_frameworks(
+        repo_path)
+        )
 
-        summary = RepositorySummary(
-            repository_name=Path(
+        purpose = (
+            RepositoryIntelligenceService.extract_purpose(
                 repo_path
-            ).name,
-
-            total_files=total_files,
-
-            languages=languages,
-
-            important_directories=sorted(
-                important_directories
             )
         )
+        summary = RepositorySummary(
+        repository_name=Path(
+            repo_path
+        ).name,
+
+        total_files=total_files,
+
+        languages=languages,
+
+        important_directories=sorted(
+            important_directories
+        ),
+
+        purpose=purpose,
+
+        frameworks=frameworks
+       )
 
         logger.info(
             f"Generated summary for {summary.repository_name}"

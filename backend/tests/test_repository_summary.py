@@ -37,6 +37,22 @@ def main():
             f"- {directory}"
         )
 
+    print()
+
+    print(
+        f"Frameworks: {summary.frameworks}"
+    )
+
+    print()
+
+    print(
+        "Purpose:"
+    )
+
+    print(
+        summary.purpose[:500]
+    )
+
 
 if __name__ == "__main__":
 

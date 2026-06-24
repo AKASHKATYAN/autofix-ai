@@ -7,6 +7,10 @@ class RepositorySummary:
 
     total_files: int
 
-    languages: list[str]
+    languages: dict[str, int]
 
     important_directories: list[str]
+
+    purpose: str = "Unknown"
+
+    frameworks: list[str] | None = None
