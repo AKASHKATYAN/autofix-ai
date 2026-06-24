@@ -7,14 +7,20 @@ from app.rag.vector_store import (
 
 class Retriever:
 
-    def __init__(self):
-        self.vector_store = VectorStore()
+    def __init__(
+        self,
+        collection_name: str = "autofix"
+    ):
+
+        self.vector_store = VectorStore(
+            collection_name=collection_name
+        )
 
     def retrieve(
-    self,
-    query: str,
-    n_results: int = 5
-):
+        self,
+        query: str,
+        n_results: int = 5
+    ):
 
         results = self.vector_store.search(
             query=query,

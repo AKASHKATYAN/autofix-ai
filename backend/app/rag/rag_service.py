@@ -5,16 +5,24 @@ from app.rag.retriever import Retriever
 from app.services.llm_service import (
     LLMService
 )
+from app.services.repository_summary_service import (
+    RepositorySummaryService
+)
 
 
 class RAGService:
 
-    def __init__(self):
-
-        self.retriever = Retriever()
-
+    def __init__(
+    self,
+    collection_name: str = "autofix",
+    repo_path: str | None = None
+):
+        self.retriever = Retriever(
+            collection_name=collection_name
+        )
         self.llm = LLMService()
-
+        self.repo_path = repo_path
+        
     def ask(
         self,
         question: str
@@ -23,6 +31,29 @@ class RAGService:
         results = self.retriever.retrieve(
             question
         )
+        summary_text = ""
+
+        if self.repo_path:
+
+            summary = (
+                RepositorySummaryService.generate_summary(
+                    self.repo_path
+                )
+            )
+
+            summary_text = f"""
+        Repository Name:
+        {summary.repository_name}
+
+        Total Files:
+        {summary.total_files}
+
+        Languages:
+        {summary.languages}
+
+        Directories:
+        {", ".join(summary.important_directories)}
+        """
 
         chunks = results["documents"]
 
@@ -35,10 +66,13 @@ class RAGService:
         prompt = f"""
 You are an expert software engineer.
 
-Answer the question ONLY using the repository context provided below.
+Answer the question ONLY using the repository information provided.
 
-If the answer cannot be found in the repository context,
+If the answer cannot be found,
 say so clearly.
+
+Repository Summary:
+{summary_text}
 
 Repository Context:
 {context}

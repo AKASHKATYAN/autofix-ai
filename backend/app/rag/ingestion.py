@@ -19,7 +19,8 @@ class IngestionPipeline:
 
     @staticmethod
     def ingest_repository(
-        github_url: str
+        github_url: str,
+        collection_name: str
     ):
 
         logger.info(
@@ -50,7 +51,9 @@ class IngestionPipeline:
             )
         )
 
-        vector_store = VectorStore()
+        vector_store = VectorStore(
+        collection_name=collection_name
+    )
 
         vector_store.add_documents(
             chunks

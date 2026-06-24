@@ -31,3 +31,4 @@ build/
 backend/repositories/
 chroma_db/
 logs/
+backend/chroma_db/
