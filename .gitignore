@@ -32,3 +32,4 @@ backend/repositories/
 chroma_db/
 logs/
 backend/chroma_db/
+backend/chroma_db/chroma.sqlite3
